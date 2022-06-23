@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookinfo</title>
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+       $(()=>{
+        console.log("working");
+
+        $('#t1').blur(()=>{
+            console.log(" blur working");
+            let input={bookid:$("#t1").val()}
+
+            let parametersofthefunction={
+                data:input,
+                url: "http://localhost:200/getinfo",
+                type:"get",
+                dataType:"json",
+                success:function(serverop){
+                    console.log("success from server")
+                    if(serverop.status)
+                    {
+                        $("#name").val(serverop.bookinfo.bookname);
+                        $("#price").val(serverop.bookinfo.price)
+                        $('#msg').text("info found")
+                    }
+                    else
+                    {
+                        
+                        $("#name").val("");
+                        $("#price").val()
+                        $('#msg').text("info no found")
+
+                    }
+                },
+                error:function(servererr)
+                {
+                    console.log(servererr);
+                }
+            }
+            $.ajax(parametersofthefunction);
+
+        })//blur ends
+
+
+        $('#update').click(()=>{
+            console.log(" update working");
+            let input={bookid:$("#t1").val(),bookname:$("#name").val(),price:$("#price").val()}
+
+            let parametersofthefunction={
+                data:input,
+                url: "http://localhost:200/updateinfo",
+                type:"get",
+                dataType:"json",
+                success:function(serverop){
+                    console.log("success from server")
+                    if(serverop.status)
+                    {
+                        $('#msg').text("info updated");
+                    }
+                    else
+                    {
+                        
+                       
+                        $('#msg').text("info not updated");
+
+                    }
+                },
+                error:function(servererr)
+                {
+                    console.log(servererr);
+                }
+            }
+            $.ajax(parametersofthefunction);
+
+        })//blur ends
+
+
+
+       })
+    </script>
+</head>
+<body>
+    bookid<input type="text" id="t1" placeholder="bookid"><span id=msg>message</span>
+    <br>
+   name <input type="text" id="name" placeholder="bookname"><br>
+   price <input type="text" id="price" placeholder="price"><br>
+    <button id="update">update</button><br>
+    
+
+    
+</body>
+</html>
